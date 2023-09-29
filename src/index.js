@@ -4,10 +4,13 @@ const bodyParser = require('body-parser');
 const { PORT } = require('./config/serverConfig');
 const apiRoutes = require('./routes/index');
 const db = require('./models/index');
+const morgan = require('morgan');
 
 const app = express();
 
 const setUpAndStartServer = () => {
+
+    app.use(morgan('combined'));
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: true}));
@@ -17,7 +20,7 @@ const setUpAndStartServer = () => {
     app.listen(PORT, () => {
         console.log(`Server started on port: ${PORT}`);
 
-        if(process.env.PORT) {
+        if(process.env.DB_SYNC) {
             db.sequelize.sync({alter: true});
         }
 
