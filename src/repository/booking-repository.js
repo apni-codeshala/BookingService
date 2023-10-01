@@ -33,9 +33,60 @@ class BookingRepository {
         } catch (error) {
             throw new AppError (
                 'RepositoryError',
-                'Cannot Updat Booking',
-                'There was some issue in updating the booing, please try again later',
+                'Cannot Update Booking',
+                'There was some issue in updating the booking, please try again later',
                 StatusCodes.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    async updateFlight (bookingId, data) {
+        try {
+            const response = await Booking.update(data, {
+                where: {
+                    id: bookingId
+                }
+            });
+            return response;
+        } catch (error) {
+            throw new AppError (
+                'Repository Error',
+                'Cannot update booking',
+                'There was some issue in updating the booking, please try again later',
+                StatusCodes.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    async cancelBooking (bookingId, data) {
+        try {
+            console.log('Inside booking repository', data, bookingId);
+            const response = await Booking.update(data, {
+                where: {
+                    id: bookingId
+                }
+            });
+            return response;
+        } catch (error) {
+            throw new AppError (
+                'Repository Error',
+                'Cannot able to cancel booking try again later',
+                'There was some issue in cancelling the flight, please try again later',
+                StatusCodes.INTERNAL_SERVER_ERROR 
+            );
+        }
+    }
+
+    async get (bookingId) {
+        try {
+            const response = await Booking.findByPk(bookingId);
+            return response;
+        } catch (error) {
+            throw new AppError (
+                'Repository Error',
+                'Cannot able to get bboking try again later',
+                'There was some issue in getting the flight, please try again later',
+                StatusCodes.INTERNAL_SERVER_ERROR 
             );
         }
     }
